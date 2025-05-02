@@ -164,7 +164,7 @@ public class HtmlTemplate {
 			+ "<body>\r\n"
 			+ "\r\n"
 			+ "    <header>\r\n"
-			+ "			<img src=\"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRACAiDIPFuHlHMUSlkxM9kIfGRzQsyJ6fS5pymj6PuXn6Unaq7-XFtWbb3Bab4XHuUUA&usqp=CAU\"/>"
+			+ "			<img src=\"https://lowgrafic.cl/wp-content/uploads/2016/11/LOGO-ENTEL-300x300.png/>"
 			+ "\r\n"
 			+ "        	<h1>Informe de Ejecuciones de Casos de Prueba</h1>\r\n"
 			+ "    </header>\r\n"

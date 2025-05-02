@@ -20,6 +20,8 @@ import org.openqa.selenium.remote.SessionId;
 
 import com.google.gson.Gson;
 import com.nttdata.utils.database.BasicReader;
+import com.nttdata.utils.driver.BrowserStackFactory;
+import com.nttdata.utils.driver.BrowserstackReporter;
 import com.nttdata.utils.driver.DriverFactory;
 import com.nttdata.utils.driver.LocalBrowserFactory;
 import com.nttdata.utils.driver.MobileFactory;
@@ -191,6 +193,7 @@ public class CommonsHooks {
 		try {
 			if (DriverFactory.getDriver() != null) {
 				log.info("Cerrando Driver");
+				
 				DriverFactory.getDriver().quit();
 				DriverFactory.removeDriver();
 			}
@@ -201,10 +204,11 @@ public class CommonsHooks {
 
 	public void buildDriver() throws Throwable {
 		String browser = System.getProperty("browser", "Chrome");
+
 		if (Constants.EXECUTION_LOCAL.equals(labExecution)) {
 			DriverFactory.addDriver(LocalBrowserFactory.buildBrowser(browser));
-		} else if (Constants.EXECUTION_MOBILE.equals(labExecution)) {
-			DriverFactory.addDriver(MobileFactory.instanceMobile(configuration));
+		} else if (Constants.EXECUTION_BS.equals(labExecution)) {
+			DriverFactory.addDriver(BrowserStackFactory.buildBrowserStackWeb(configuration));
 		} else {
 			throw new Exception("Configuracion de ejecucion no encontrada.");
 		}

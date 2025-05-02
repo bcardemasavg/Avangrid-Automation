@@ -1,0 +1,31 @@
+[
+	{
+		"id": "defaultAndroid",
+		"capability": {
+			"caps": {
+				"platformName": "Android",
+				"noReset": "true",
+				"fullReset": "false",
+				"webView": "WEBVIEW_cl.santander.smartphone.homo",
+				"deviceName": "Samsung SM-A715F",
+				"udid": "R58N64558ZJ",
+				"recreateChromeDriverSessions": false
+			}
+		}
+	},
+	{
+		"id": "BS",
+		"capability": {
+			"caps": {
+				"browserName": "Chrome",
+				"bstack:options": {
+					"platformName": "windows",
+					"os": "Windows",
+					"osVersion": "11",
+					"browserVersion": "130",					
+					"consoleLogs": "info"
+				}
+			}
+		}
+	}
+]

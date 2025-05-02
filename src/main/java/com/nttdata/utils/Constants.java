@@ -5,6 +5,7 @@ public class Constants {
 	public static final String TEST_CASE_KEY = "TestCaseKey";
 	public static final String AUTHORIZATION = "Authorization";
 	public static final String EXECUTION_LOCAL = "local";
+	public static final String EXECUTION_BS = "BrowserStack";
 	public static final String EMPTY = "";
 	public static final String ELEMENTS = "elements";
 	public static final String ANDROID = "ANDROID";
