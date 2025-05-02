@@ -3,6 +3,7 @@ package com.nttdata.utils;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.Driver;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -193,7 +194,11 @@ public class CommonsHooks {
 		try {
 			if (DriverFactory.getDriver() != null) {
 				log.info("Cerrando Driver");
-				
+				if (Constants.EXECUTION_BS.equals(labExecution)) {
+					String executionType = System.getProperty("ExecutionType", "web");
+					BrowserstackReporter.markAs(testCase.getStatus(), sessionID, executionType, testCase.getError());
+				}
+
 				DriverFactory.getDriver().quit();
 				DriverFactory.removeDriver();
 			}

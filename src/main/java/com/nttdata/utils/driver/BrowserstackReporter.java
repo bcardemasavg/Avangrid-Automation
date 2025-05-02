@@ -25,28 +25,31 @@ public class BrowserstackReporter {
 	private BrowserstackReporter() {
 	}
 
-	public static String markAs(String status, String sessionId, String type) throws URISyntaxException, IOException {
+	public static String markAs(String status, String sessionId, String type, String error)
+			throws URISyntaxException, IOException {
 		String responseAsString = Constants.EMPTY;
 		String username = System.getenv("BROWSERSTACK_USERNAME");
 		String accessKey = System.getenv("BROWSERSTACK_ACCESS_KEY");
 		String estado = "Failed";
-		if (status.equals("PASSED")) {
+		String reason = "";
+		if (status.equalsIgnoreCase("PASSED")) {
 			estado = "Passed";
 		}
 
 		URI uri = null;
 		uri = new URI("https://@api.browserstack.com/app-automate/sessions/" + sessionId + ".json");
-		if (type.equals("WEB")) {
+		if (type.equalsIgnoreCase("WEB")) {
 			uri = new URI("https://@api.browserstack.com/automate/sessions/" + sessionId + ".json");
 		}
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("status", estado));
-		if (status.equals("FAILED")) {
-			nameValuePairs.add(new BasicNameValuePair("reason", estado));
+		if (status.equalsIgnoreCase("FAILED")) {
+			nameValuePairs.add(new BasicNameValuePair("reason", error));
+			reason = error;
 		}
 
 		try {
-			String bodyString = "{\"status\":\"" + estado + "\", \"reason\":\"" + estado + "\"}";
+			String bodyString = "{\"status\":\"" + estado + "\", \"reason\":\"" + reason + "\"}";
 			OkHttpClient client = new OkHttpClient().newBuilder().build();
 			MediaType mediaType = MediaType.parse("application/json");
 			RequestBody body = RequestBody.create(bodyString, mediaType);

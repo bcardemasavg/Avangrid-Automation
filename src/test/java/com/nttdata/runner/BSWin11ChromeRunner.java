@@ -16,7 +16,7 @@ public class BSWin11ChromeRunner extends DesktopRunner {
 	@BeforeClass
 	public static void config() {
 		System.setProperty("labExecution", Constants.EXECUTION_BS);
-		System.setProperty("closeDriver", "true");
-		System.setProperty("configuration", System.getenv().getOrDefault("configuration", "BS"));
+		System.setProperty("ExecutionType", Constants.EXECUTION_WEB);
+		System.setProperty("configuration", System.getenv().getOrDefault("configuration", "defaultBSWeb"));
 	}
 }

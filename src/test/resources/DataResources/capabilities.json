@@ -14,12 +14,11 @@
 		}
 	},
 	{
-		"id": "BS",
+		"id": "defaultBSWeb",
 		"capability": {
 			"caps": {
 				"browserName": "Chrome",
 				"bstack:options": {
-					"platformName": "windows",
 					"os": "Windows",
 					"osVersion": "11",
 					"browserVersion": "130",					

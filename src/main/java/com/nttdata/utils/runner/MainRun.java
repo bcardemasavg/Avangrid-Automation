@@ -18,6 +18,6 @@ public class MainRun {
 	@BeforeClass
 	public static void configPrincipal() {
 		System.setProperty("project.build", DateTimeFormatter.ofPattern("dd/MM/yyyy").format(LocalDateTime.now()));
-		System.setProperty("project.name", System.getenv().getOrDefault("PROJECT_NAME", "MI REDSALUD"));
+		System.setProperty("project.name", System.getenv().getOrDefault("PROJECT_NAME", "Automation"));
 	}
 }

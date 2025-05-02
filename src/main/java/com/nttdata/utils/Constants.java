@@ -17,6 +17,7 @@ public class Constants {
 	 * Execution type
 	 */
 	public static final String EXECUTION_DESKTOP = "desktop";
+	public static final String EXECUTION_WEB = "web";
 	public static final String EXECUTION_MOBILE = "mobile";
 	public static final String EXECUTION_WEB_MOBILE = "webMobile";
 
