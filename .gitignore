@@ -15,6 +15,7 @@ dist/
 .classpath
 .project
 *.log
+/.vscode/
 
 # Compiled Java class files
 *.class

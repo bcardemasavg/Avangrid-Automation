@@ -8,7 +8,7 @@ import com.nttdata.utils.runner.MainRun;
 import io.cucumber.junit.CucumberOptions;
 
 
-@CucumberOptions(tags = "@login", plugin = {
+@CucumberOptions(plugin = {
 		"json:" + MainRun.REPORT_FOLDER + "/LocalChromeRunner.json",
 		"html:" + MainRun.REPORT_FOLDER + "/LocalChromeRunner.html",
 		"junit:" + MainRun.REPORT_FOLDER + "/LocalChromeRunner.xml" })

@@ -43,13 +43,17 @@ public class TestBase {
 		loginPage = new LoginPage(driver);
 		commonsPage = new CommonsPage(driver);
 		// logOutPage = new LogOutPage(driver);
-
+		loadData("datos", "TC ID", scenarioContext.getTestCase().getTestKey());
 	}
 
 	public void loadData(String dataFile, String id) {
+		loadData(dataFile, "id", id);
+	}
+
+	public void loadData(String dataFile, String fieldNameID, String id) {
 		currentDataFile = dataFile;
 		JSONArray datos = (JSONArray) scenarioContext.getScenarioContext(dataFile);
-		JSONObject dato = filtrarJSONArrayByCampo(datos, "id", id);
+		JSONObject dato = filtrarJSONArrayByCampo(datos, fieldNameID, id);
 		assertNotNull(dataFile + " no encontrada '" + id + "'", dato);
 		scenarioContext.setScenarioContext("datos_" + dataFile, dato);
 	}

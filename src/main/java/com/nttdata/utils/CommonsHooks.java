@@ -31,6 +31,7 @@ import com.nttdata.utils.reporter.HtmlReporter;
 import com.nttdata.utils.reporter.JiraReporter;
 import com.nttdata.utils.reporter.ScenarioReport;
 import com.nttdata.utils.reporter.TestCase;
+import com.nttdata.utils.runner.MainRun;
 
 import io.cucumber.core.runner.TestCaseStateReflex;
 import io.cucumber.java.Scenario;
@@ -58,6 +59,7 @@ public class CommonsHooks {
 	TestCase testCase;
 	TestCaseStateReflex testCaseStateReflex;
 	ScenarioReport scenarioReport;
+	boolean runTestCase = true;
 
 	public void prepareTest(Scenario scenario) throws Throwable {
 		Utilities.setTimeZone();
@@ -67,11 +69,28 @@ public class CommonsHooks {
 		testCase.setName(scenario.getName());
 		testCase.setStart(new Timestamp(System.currentTimeMillis()));
 		testCaseStateReflex = new TestCaseStateReflex(scenario);
-		scenarioReport = ScenarioReport.instance(testCaseStateReflex.getScenarioName(), testCase);
+		
 		testCase.getSteps().addAll(testCaseStateReflex.getStepFormat());
 		testCase.getTags().addAll(scenario.getSourceTagNames());
 		testCase.setTestKey(generarTestCaseKey());
 		testCaseKey = testCase.getTestKey();
+
+		if (MainRun.tags != null) {
+			boolean testCaseKeyFound = false;
+			for (String tag : MainRun.tags) {
+				if (testCaseKey.equals(tag)) {					
+					testCaseKeyFound = true;
+					break;
+				}
+			}
+			if (!testCaseKeyFound) {
+				testCase.setStatus("NOT RUN");
+				runTestCase = false;
+				throw new Exception("El TestCaseKey '" + testCaseKey + "' no está configurado en el runner");
+			}
+		}
+
+		scenarioReport = ScenarioReport.instance(testCaseStateReflex.getScenarioName(), testCase);
 		fechaInicioTest = Utilities.getFechaHora();
 		millisInicioTest = testCase.getStart().getTime();
 		scenarioContext.setTestCase(testCase);
@@ -266,6 +285,9 @@ public class CommonsHooks {
 
 	public void finalizarTest(Scenario scenario) throws Exception {
 		try {
+			if(!runTestCase){
+				return;
+			}
 			testCase.setFinish(new Timestamp(System.currentTimeMillis()));
 
 			/* Generar Reporte HTML */

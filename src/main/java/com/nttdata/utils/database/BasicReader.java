@@ -1,6 +1,7 @@
 package com.nttdata.utils.database;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,6 +68,13 @@ public class BasicReader extends JsonDataReader {
 
 	public JSONArray readJsonFile(String fileName) {
 		JSONArray fileContentArray = new JSONArray(Utilities.readFile(getFileFromResources(fileName)));
+		return fileContentArray;
+	}
+
+	public JSONArray readExcelFile(String fileName, String sheetName) throws IOException {
+		String filePath = getFileFromResources(fileName).getAbsolutePath();
+        ExcelReader excelReader = new ExcelReader(filePath);
+		JSONArray fileContentArray = excelReader.readSheetAsJson(sheetName);
 		return fileContentArray;
 	}
 

@@ -28,7 +28,8 @@ public class Hooks extends CommonsHooks {
 	@Before
 	public void prepareTest(Scenario scenario) throws Throwable {
 		super.prepareTest(scenario);
-		scenarioContext.setScenarioContext("usuarios", basicReader.readJsonFile("usuarios.json"));
+		//scenarioContext.setScenarioContext("usuarios", basicReader.readJsonFile("usuarios.json"));
+		scenarioContext.setScenarioContext("datos", basicReader.readExcelFile("Execution Control.xlsx", "TestCasesRunner"));
 		scenarioContext.setScenarioContext("ENVIRONMENT", environment);
 		scenarioContext.setScenarioContext(Constants.TEST_CASE_KEY, testCaseKey);
 		scenarioContext.setScenario(scenario);

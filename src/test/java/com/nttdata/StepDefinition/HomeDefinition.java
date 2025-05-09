@@ -13,6 +13,8 @@ public class HomeDefinition extends TestBase {
 	@Given("ingreso a la aplicación web y navego a la url")
 	public void ingreso_a_la_aplicación_web_y_navego_a_la_url() {
 		ingresarWebPorHost("host");
+
+		System.out.println("Dato generado: " + super.getData("Account Number"));
 	}
 
 	private void ingresarWebPorHost(String hostName) {
@@ -21,9 +23,5 @@ public class HomeDefinition extends TestBase {
 		homePage.waitUnitlPageLoadedWithBussyIcon();
 	}
 
-	@Given("cargo la data {string} con id {string}")
-	public void cargoLaDataConId(String dataFile, String id) throws Throwable {
-		super.loadData(dataFile, id);
-	}
 
 }
