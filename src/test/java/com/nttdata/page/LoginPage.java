@@ -1,65 +1,75 @@
 package com.nttdata.page;
 
+import io.cucumber.datatable.DataTable;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.List;
+
 public class LoginPage extends WebBasePage {
 
-	@FindBy(xpath = "//p[text()='Usuario']/following-sibling::div//input[@type='text']")
-	private WebElement inputUsuario;
+	@FindBy(xpath = "//input[@aria-labelledby='EmailorUsername']")
+	private WebElement inputEmail;
 
-	@FindBy(xpath = "//p[text()='Contraseña']/following-sibling::div//input[@type='password']")
-	private WebElement inputContrasena;
+	@FindBy(xpath = "//input[@aria-labelledby='Password']")
+	private WebElement inputPassword;
 
-	@FindBy(xpath = "(//button[text()='Ingresar al sistema'])[last()]")
-	private WebElement buttonIngresarAlSistema;
+	@FindBy(xpath = "(//div[@class='row bottom-header-content-wrapper justify-content-between align-items-center m-auto w-100']//a[text()='Sign in / Register'])[1]")
+	private WebElement buttonSingsInRegister;
 
-	@FindBy(xpath = "(//button[text()='Ingresar como administrador'])[last()]")
-	private WebElement buttonIngresarComoAdministrador;
+	@FindBy(xpath = "//div[@class='button-holder ']//button[@type='submit']")
+	private WebElement buttonSingsIn;
 
-	@FindBy(xpath = "//span[text()='Iniciar sesión']")
-	private WebElement buttonIniciarSesionCorporativa;
+	@FindBy(xpath = "//div[@class='alert alert-dismissible alert-danger']")
+	private WebElement alertErrorLogin;
 
-	@FindBy(xpath = "//input[@type='email']")
-	private WebElement inputCorreoCorporativo;
+	@FindBy(xpath = "//button[text()=' My Account ']")
+	private WebElement buttonMyAccount;
 
-	@FindBy(xpath = "//span[text()='Siguiente']")
-	private WebElement botonSiguiente;
+	@FindBy(xpath = "(//button[@class='account-number-cell d-flex flex-column justify-content-end agr-link button-link ng-star-inserted'])[1]")
+	private WebElement buttonAccount;
 
-	@FindBy(xpath = "//input[@type='password']")
-	private WebElement inputContrasenaCorporativa;
-
-	@FindBy(xpath = "//div[@id='passwordNext']")
-	private WebElement botonSiguienteContrasena;
-
-	@FindBy(xpath = "//div[@role='dialog']")
-	private WebElement dialogLoginCorporativo;
 
 	public LoginPage(WebDriver driver) {
 		super(driver);
 		PageFactory.initElements(driver, this);
 	}
 
-	public void sendKeysInputUsuario(String usuario) {
-		sendKeys(inputUsuario, usuario);
+	public void sendKeysInputUser(String user) {
+		sendKeys(inputEmail, user);
 	}
 
-	public void sendKeysInputContrasena(String contrasena) {
-		sendKeys(inputContrasena, contrasena);
+	public void sendKeysInputPassword(String password) {
+		sendKeys(inputPassword, password);
 	}
 
-	public void clickButtonIngresarAlSistema() {
-		click(buttonIngresarAlSistema);
+	public void clickButtonSingsInRegister() {
+		click(buttonSingsInRegister);
 	}
 
-	public void clickButtonIngresarComoAdministrador() {
-		click(buttonIngresarComoAdministrador);
+	public void clickButtonbuttonSingsIn() {
+		click(buttonSingsIn);
 	}
 
-	public void clickButtonIniciarSesionCorporativa() {
+	public void ValidateLoginErrorText() throws Exception {
+		validarTextoWeb("Error:The information you have entered does not match our records. Please try again or click below to reset your password or to receive your UserID.",true);
+	}
+
+	public void isVisibleButtonAccount() {
+		isVisible(buttonMyAccount, 60);
+	}
+
+	public void validateMenu(DataTable menu) {
+		List<String> data = menu.asList();
+		click(buttonAccount);
+		System.out.println(data.get(0));
+		isVisible(By.id("//button[text()=' "+data.get(0)+" ']"),20);
+	}
+
+	/*public void clickButtonIniciarSesionCorporativa() {
 		click(buttonIniciarSesionCorporativa);
 	}
 
@@ -82,5 +92,7 @@ public class LoginPage extends WebBasePage {
 	public boolean isVisibleInputCorreoCorporativo() {
 		return isVisible(inputCorreoCorporativo, 2);
 	}
+
+	 */
 
 }

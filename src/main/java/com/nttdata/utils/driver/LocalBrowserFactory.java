@@ -67,19 +67,18 @@ public class LocalBrowserFactory {
 			return new RemoteWebDriver(new URL(remote), options);
 		}
 
-		File driverFile = new File(System.getenv().getOrDefault("chromedriver", "/usr/bin/chromedriver"));
-		if (!driverFile.exists()) {
-			log.info("Download driver from WebDriverManager");
-			String browserVersion = System.getenv().getOrDefault("browserVersion", "latest");
-			if (proxyParam != null) {
-				WebDriverManager.chromedriver().browserVersion(browserVersion).proxy(proxyParam).setup();
-			} else {
-				WebDriverManager.chromedriver().browserVersion(browserVersion).setup();
-			}
-		} else {
-			log.info("LOCAL_DRIVER: " + driverFile.getAbsolutePath());
+		// Ruta del ejecutable del chromedriver específico
+		File driverFile = new File("C:/Users/E966377/dev/chromedriver/chromedriver.exe");
+		if (driverFile.exists()) {
+			log.info("USANDO LOCAL_DRIVER: " + driverFile.getAbsolutePath());
 			System.setProperty(ChromeDriverService.CHROME_DRIVER_EXE_PROPERTY, driverFile.getAbsolutePath());
+		} else {
+			throw new Exception("El archivo chromedriver no existe en la ruta especificada: " + driverFile.getAbsolutePath());
 		}
+
+		// Establecer la ruta del ejecutable de Chrome específico
+		options.setBinary("C:/Users/E966377/dev/chrome/chrome.exe");
+		options.addArguments("--headless");
 
 		if (proxyParam != null) {
 			options.addArguments("--proxy-server=" + proxyParam);
