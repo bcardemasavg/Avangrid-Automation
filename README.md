@@ -1,4 +1,4 @@
-# automation
+# Automation - IntelliJ with Java and Cucumber
 
 
 
