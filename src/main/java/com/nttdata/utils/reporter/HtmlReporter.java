@@ -1,6 +1,9 @@
 package com.nttdata.utils.reporter;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
@@ -9,7 +12,12 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
 import com.nttdata.utils.Utilities;
+import com.nttdata.utils.database.BasicReader;
+import com.nttdata.utils.database.ExcelReader;
 import com.nttdata.utils.runner.MainRun;
 
 import io.cucumber.java.Status;
@@ -92,7 +100,7 @@ public class HtmlReporter {
 		return result;
 	}
 
-	private static String generateJSOnReportTestCase(TestCase testCase) {
+	private static String generateJSOnReportTestCase(TestCase testCase) throws Exception {
 		Step step;
 		String jsonCasosDePrueba = "{";
 		jsonCasosDePrueba += "    id: '" + testCase.getTestKey() + "',";
@@ -144,8 +152,60 @@ public class HtmlReporter {
 		}
 		jsonCasosDePrueba += "    ]";
 		jsonCasosDePrueba += "}";
+
+	    // Actualizar el archivo Excel
+	    actualizarExcelEjecutacion(testCase);
+
 		return jsonCasosDePrueba;
 	}
+
+private static void actualizarExcelEjecutacion(TestCase testCase) throws IOException {
+    // Usar la ruta del archivo desde DesktopRunner
+	System.out.println("Starting actualizarExcelEjecutacion...JIMMY JIMMY");
+    String ambiente = System.getenv().getOrDefault("AMBIENTE", null);
+    String filePath = new BasicReader(ambiente).getFileFromResources("Execution Control.xlsx").getAbsolutePath();
+    File excelFile = new File(filePath);
+    Workbook workbook;
+
+    try (FileInputStream fis = new FileInputStream(excelFile)) {
+        workbook = new XSSFWorkbook(fis);
+        Sheet sheet = workbook.getSheet("TestCasesRunner");
+
+        if (sheet == null) {
+            sheet = workbook.createSheet("TestCasesRunner");
+        }
+
+        for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+            Row row = sheet.getRow(i);
+            if (row == null) {
+                continue; // Saltar filas vacías
+            }
+
+            Cell cell = row.getCell(1); // Columna B: TC ID
+            if (cell == null || cell.getCellType() != CellType.STRING) {
+                continue; // Saltar celdas vacías o no tipo STRING
+            }
+
+            if (cell.getStringCellValue().equals(testCase.getTestKey())) {
+                // Actualizar columnas F y G
+                Cell statusCell = row.createCell(5, CellType.STRING); // Columna F
+                statusCell.setCellValue(testCase.getStatus().toString());
+
+                Cell timeCell = row.createCell(6, CellType.STRING); // Columna G
+                timeCell.setCellValue(Utilities.formatDate(testCase.getStart(), "yyyy-MM-dd HH:mm:ss"));
+
+                break;
+            }
+        }
+    }
+
+    // Guardar el archivo actualizado
+    try (FileOutputStream fos = new FileOutputStream(excelFile)) {
+        workbook.write(fos);
+    } finally {
+        workbook.close();
+    }
+}
 
 	private static String generarHTMlConErrorOcultable(TestCase testCase) {
 		String result = "<button class='boton-bonito' onclick='toggleSpan(\\\"" + testCase.getTestKey()

@@ -72,6 +72,25 @@ public class ExcelReader {
      * @param cell Celda a leer.
      * @return Valor de la celda como String o null si está vacía.
      */
+
+    public JSONObject getCredentialsForTcId(String sheetName, String tcId) {
+        JSONArray data = readSheetAsJson(sheetName);
+
+        for (Object obj : data) {
+            JSONObject jsonObject = (JSONObject) obj;
+            if (jsonObject.optString("TC ID").equals(tcId)) {
+                String userName = jsonObject.optString("User Name", "N/A");
+                String password = jsonObject.optString("Password", "N/A");
+
+                JSONObject credentials = new JSONObject();
+                credentials.put("User Name", userName);
+                credentials.put("Password", password);
+                return credentials;
+            }
+        }
+
+        throw new IllegalArgumentException("No se encontraron credenciales para el TC ID: " + tcId);
+    }
     private String getCellValueAsString(Cell cell) {
         switch (cell.getCellType()) {
             case STRING:

@@ -267,13 +267,11 @@ public class WebBasePage {
 		}
 	}
 
-	protected boolean isVisible(By byElement, int timeOutSeconds) {
+	protected void isVisible(By byElement, int timeOutSeconds) {
 		try {
 			this.wait.withTimeout(Duration.ofSeconds(timeOutSeconds))
 					.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(byElement));
-			return true;
 		} catch (Exception e) {
-			return false;
 		}
 	}
 
@@ -564,7 +562,7 @@ public class WebBasePage {
 			mensaje = "//*[contains(text(),'" + mensaje + "')]";
 		}
 		WebElement element;
-		waitUntilElementIsVisibleNonThrow(By.xpath(mensaje), 20);
+		waitUntilElementIsVisibleNonThrow(By.xpath(mensaje), 10);
 		moveToElement(By.xpath(mensaje));
 		element = ((WebDriver) DriverFactory.getDriver()).findElement(By.xpath(mensaje));
 		return isVisible(element);
